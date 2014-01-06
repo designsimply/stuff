@@ -1,0 +1,31 @@
+@font-face {
+    font-family: 'designsimply';
+    src: url('fonts/designsimply-regular-webfont.eot');
+}
+
+@font-face {
+    font-family: 'designsimply';
+    src: url(data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAAV4AA4AAAAAB/AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAABRAAAABwAAAAcZydCZEdERUYAAAFgAAAAHQAAACAANAAET1MvMgAAAYAAAABEAAAAYFZqcWpjbWFwAAABxAAAAEgAAAFKAhfSv2dhc3AAAAIMAAAACAAAAAgAAAAQZ2x5ZgAAAhQAAAFWAAABbMJizFhoZWFkAAADbAAAAC4AAAA2CmoweGhoZWEAAAOcAAAAHAAAACQfwBBAaG10eAAAA7gAAAAYAAAAGBoSAQZsb2NhAAAD0AAAABAAAAAQAJ4BKG1heHAAAAPgAAAAHgAAACAATABBbmFtZQAABAAAAAE8AAACrDutYD9wb3N0AAAFPAAAADEAAABQNxB813dlYmYAAAVwAAAABgAAAAY9cFFPAAAAAQAAAADMPaLPAAAAAM10sacAAAAAzXTt7XjaY2BkYGDgA2IJBhBgYmAEQjYgZgHzGAAEjAA5AAAAeNpjYOb1ZJzAwMrAwmrMcpaBgWEWhGY6y5DGeRnIB0phB6He4X4MDg8YPjKxpf1LY2Dgj2HQAAozIilRYGAEAGXKC5N42t2KwQmAMBAEZy8hXxvwkaeF2H8NtmAF58aIYAsO7A0DBxTmVsRgd+nuymY3W8TBGZlgk9nLUp9/o8YbCp/gi/g9F5CyCKYAAQAB//8AD3jaXZA/SEJxHMR/58/n818+80/pqEYFSZBmEhKChaO4Gg5h6VjQ1CAtDWEhGOGkNbgJDgYuQm1FNdSUYENuotDmEGqPb72WiG66+3DccAzsj5YYUzJezSlTjq0pzqbnGiPEKWa3qdQe96IwZ9J43DOqwDILznoxq+cBnxFaWKZXLFp4YU5Z/YnTWxpRrdWBu0zdeqKS3Y1F5iVpPhLbzVYSdeqW4O60qEaju5NNv/UNL2jiHKG2y9VGSHFNvJhyIzqiY3qnr6t8XPJRqd+gVj2cKRSr+Wg0Xy0WMuE6Fhp9pH1SPH8FwI4DHI72n+mJzmh1MMA99uB/3mccGmikpJRknInMyJhO5JNBiBNbchnEUx9GcUW+GD6Smm8LOpmnQHJZgUGeHj58XvIdQS6plXvwu2NQNgwmJ9bHTqFHN2PH2EnXQn/swIbQk5L/idD/aX4DXYx96wAAeNpjYGRgYGBkcPSSLD8Wz2/zlYGbgwEEzpa8fY9MCyTxxwApDgYmEA8AOdoKtwAAeNpjYGRg4I/5f4OBQSCJgQFMMjKgAlYAV3MDLgIAAAAAAAAAAqoAAAQAAAAQYgAAAQYBBgAAAAAAAAAAAAgAcgCWALZ42mNgZGBgYGewY2BmAAEmIGZkAIk5gPkMAAlJAI4AAHjajZDNSoJBFIafSQsEadGihatvGVLmb4FBC4k2UURWboLQMpP8UvTT6jZadAldRRdQu66i6+idcbAPIZBhhuec856/AdK8kcAkU8Cm7pQNGVlTXmKVQ88J9jn3nCTLq+dlnvnwvMKGKXtOkTFXntPkzcTzGlnz7vmTdfPt+UuaH655ZExPx1KTkLZoJF9Lb0RXd6xrvQd6R/J0pAyoi0IGynzhTJGOq9NkSIEceZ0Ce1xwRIMTUTw7nrs1l/1/l2BOeSlr6LR9p433PVVm4K0/772UETdOP5ll5Kiwo2ioqg+qaTV38vZUuUXRa4pSl/RWFt6krn52wq461Zy+rUifJ/kjnQFVtnVuY/VGsXo5N2koxeJ/0pDV0vR2w2i2YV1xm3nsNIG2KLtYSRNUZFVl7zq//afSL6wfZiN42mNgYgCD/+kMaQzYADsQMzIwMTIxMjOyMLKyl+ZluhoYGIBoN0M4bQiljQAV3AqUAAAAAAFRTz1vAAA=) format('woff'),
+         url('fonts/designsimply-regular-webfont.ttf') format('truetype'),
+         url('fonts/designsimply-regular-webfont.svg#design_simplyregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.designsimply {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	-webkit-font-smoothing: antialiased;
+	font-size: 8px;
+	color: #000;
+	line-height: 1;
+	font-family: 'designsimply';
+	text-decoration: inherit;
+	font-weight: normal;
+	font-style: normal;
+	vertical-align: top;
+}
+
+.designsimply-edit:before { content: '\f101'; }
+.designsimply-delete:before { content: '\f102'; }

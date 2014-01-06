@@ -1,0 +1,66 @@
+/* login */
+
+.login {
+	font-family: Helvetica, sans-serif;
+}
+.login h1 {
+	font-family: "Trebuchet MS";
+	text-align: center;
+	text-transform: lowercase;
+}
+.login a {
+	text-decoration: none;
+}
+.login-container {
+	margin: auto;
+	max-width: 320px;
+}
+.login-form {
+	
+}
+.login-form div {
+	position: relative;
+	margin-bottom: 1em;
+}
+.login fieldset {
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+.login legend {
+	display: none;
+}
+.login-field:focus label	 {
+	display: none;
+}
+.login .login-field label {
+	position: absolute;
+	top: 1.2em;
+	left: 1em;
+	color: #bbb;
+	background: #fbfbfb;
+	width: 5em;
+}
+.login .login-field input {
+	padding: .5em .5em .4em 4em;
+	margin: 0;
+	background-color: #fbfbfb;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	width: 8.8em;
+	font-size: 1.5em;
+}
+.login-form input[type=submit] {
+	background-color: #888;
+	border: 1px solid #474747;
+	border-radius: 4px;
+	color: #fff;
+	font-size: 1em;
+	padding: .8em;
+	line-height: 1em;
+	width: 12em;
+}
+#stay-signed-in,
+label[for="stay-signed-in"] {
+	float: right;
+}
