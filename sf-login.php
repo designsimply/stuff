@@ -18,7 +18,7 @@ function login_header() { ?>
 <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Stuff Log In</title>
-	<link rel="stylesheet" id="admin-css"  href="<?php echo HOME; ?>/sf-control/css/admin.css" type="text/css" media="all" />
+	<link rel="stylesheet" id="admin-css"  href="<?php echo HOME; ?>sf-control/css/admin.css" type="text/css" media="all" />
 	<meta name="robots" content="noindex,nofollow" />
 </head>
 <body class="login">
