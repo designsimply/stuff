@@ -27,7 +27,7 @@
       </div>
       <div class="above-below15">
         <label for="description" class="placeholder">Description</label>
-        <textarea name="description" id="description" tabindex="3"><?php echo $_GET['description']; ?></textarea>
+        <textarea name="description" id="description" tabindex="3"><?php echo $_GET['desc']; ?></textarea>
       </div>
       <div class="above-below15">
         <label for="tags" class="placeholder ">Tags</label>
