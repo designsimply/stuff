@@ -46,7 +46,7 @@ foreach ( $result as $row ) {
 		/*"<a href=\"sf-control/edit.php?id=$row->id\" alt=\"delete\"><span class=\"genericon genericon-close\"></span></a> " .*/
 		"<a href=\"sf-control/edit.php?id=$row->id\" alt=\"edit\"><span class=\"genericon genericon-edit\"></span></a> ";
 	}
-	$i .= "<abbr class=\"date\" title=\"$sincewhen\">$datemod</abbr> " . 
+	$i .= "<abbr class=\"date\" title=\"$datemod\">$sincewhen</abbr> " . 
 		"<a href=\"$row->url\" title=\"$row->title\">$row->title</a> ";
 		if ( '' != $row->description ) { $i .= "&mdash; $row->description\n"; }
 	$items[] = $i;
