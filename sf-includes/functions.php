@@ -93,44 +93,41 @@ function sf_user_can_edit() {
  * Print time since a given date.
  */
 function time_since( $date ) {
-	date_default_timezone_set( 'EST' );
-    // array of time period chunks
-    $chunks = array(
-        array(60 * 60 * 24 * 365 , 'year'),
-        array(60 * 60 * 24 * 30 , 'month'),
-        array(60 * 60 * 24 * 7, 'week'),
-        array(60 * 60 * 24 , 'day'),
-        array(60 * 60 , 'hour'),
-        array(60 , 'minute'),
-    );  
-    $today = time(); /* Current unix time in seconds  */
-    $since = $today - $date;
-    // $j saves performing the count function each time around the loop
-    for ($i = 0, $j = count($chunks); $i < $j; $i++) {
-    
-        $seconds = $chunks[$i][0];
-        $name = $chunks[$i][1];
-    
-        // finding the biggest chunk (if the chunk fits, break)
-        if (($count = floor($since / $seconds)) != 0) {
-            break;
-        }   
-    }   
-    $output = ($count == 1) ? '1 '.$name : "$count {$name}s ";
-    //$output .= "$count{$name} ";
-    if ($i + 1 < $j) {
-        // now getting the second item
-        $seconds2 = $chunks[$i + 1][0];
-        $name2 = $chunks[$i + 1][1];
-    
-        // add second item if it's count greater than 0
-        if (($count2 = floor(($since - ($seconds * $count)) / $seconds2)) != 0) {
-            $output .= ($count2 == 1) ? '1 '.$name2 : " $count2 {$name2}s";
-            //$output .= " $count2{$name2}";
-        }   
-    }   
-        $output .= " ago";
-    return $output;
+        date_default_timezone_set( 'UTC' );
+        $bit =  array(
+                array( 'y', 60 * 60 * 24 * 365 ),
+                array( 'm', 60 * 60 * 24 * 30 ),
+                array( 'w', 60 * 60 * 24 * 7 ),
+                array( 'd', 60 * 60 * 24 ),
+                array( 'h', 60 * 60 ),
+                array( 'm', 60 ),
+                array( 's', 1 ),
+        );
+        $since = time() - $date;
+
+        for ($i = 0, $j = count($bit); $i < $j; $i++) {
+                // Get the first item
+                $name = $bit[$i][0];
+                $seconds = $bit[$i][1];
+
+                // Find the biggest chunk (if the chunk fits, break)
+                if ( ( $count = floor( $since / $seconds ) ) != 0 ) { break; } 
+        }
+        $output[] = $count . $name;
+
+        if ($i + 1 < $j) {
+                // Get the second item
+                $name2 = $bit[$i + 1][0];
+                $seconds2 = $bit[$i + 1][1];
+
+                // Add a second item if its count is greater than 0
+                if ( ( $count2 = floor( ( $since - ( $seconds * $count ) ) / $seconds2 ) ) > 0 ) {
+                        $output[] = $count2 . $name2;
+                }
+        }
+        if ($output) { $output[] = 'ago'; }
+
+        return implode( ' ', $output );
 }
 
 /**
