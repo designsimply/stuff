@@ -57,17 +57,17 @@ function sf_validate_auth_cookie() {
 	$user = $sfdb->get_row( "SELECT user_login, user_token, user_timeout FROM sf_user WHERE user_identifier = '$esc_identifier'" );
 
 	if ( $clean['token'] != $user->user_token )
-		die( 'Login failed. (wrong token)<br><a href="' . HOME . '/sf-login.php">Try again</a>.' );
+		die( 'Login failed. (wrong token)<br><a href="' . HOME . 'sf-login.php">Try again</a>.' );
 
-	if ( time() > $user->user_timeout )
-		//die( 'Login failed. (timeout)<br><a href="' . HOME . '/sf-login.php">Try again</a>.' );
-		header('Location: ../sf-login.php');
+	if ( time() > $user->user_timeout ) {
+		//die( 'Login failed. (timeout)<br><a href="' . HOME . 'sf-login.php">Try again</a>.' );
+		header( 'Location: ' . HOME . 'sf-login.php' . '?' . http_build_query( $_GET ) );
+	}
 
 	if ( $clean['identifier'] != sha1( $salt . sha1( $user->user_login . $salt ) ) )
-		die( 'Login failed. (invalid identifier)<br><a href="' . HOME . '/sf-login.php">Try again</a>.' );
+		die( 'Login failed. (invalid identifier)<br><a href="' . HOME . 'sf-login.php">Try again</a>.' );
 
 	// Successful login.
-	//return $user->user_login;
 	return true;
 }
 

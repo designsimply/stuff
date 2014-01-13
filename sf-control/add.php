@@ -102,7 +102,10 @@
 		echo '</p>'; ?>
 
 		<p class="center"><a href="<?php echo $dbcheck->url; ?>">continue</a></p>
-	<?php }
+	<?php 
+		sleep( 3 );
+		header( 'Location: ' . $dbcheck->url );
+	}
 
 } else { echo "<p>Error</p>"; } ?>
 

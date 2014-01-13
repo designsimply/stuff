@@ -106,7 +106,7 @@ foreach ( $results as $row ) {
     if ($s_subcat) {$stags[] = strtolower( $s_subcat ); $search_result .= " &rarr; <a href=\"/d/home/".strtolower($s_cat)."/".strtolower($s_subcat)."/\">$s_subcat</a>";}
     if ($s_subcat1) {$stags[] = strtolower( $s_subcats ); $search_result .= " &rarr; <a href=\"home/".strtolower($s_cat)."/".strtolower($s_subcat)."/".strtolower($s_subcat1)."/\">$s_subcat1</a>";}
     if ($s_subcat2) {$stags[] = strtolower( $s_subcats ); $search_result .= " &rarr; <a href=\"home/".strtolower($s_cat)."/".strtolower($s_subcat)."/".strtolower($s_subcat1)."/".strtolower($s_subcat2)."/\">$s_subcat2</a>";}
-	$search_result .= ' &rarr; ';
+    $search_result .= ' &rarr; ';
     if ($s_url) {$search_result .= "<a href=\"$s_url\">$s_title</a>";} else {$search_result .= "$s_title";}
     if ($s_desc) {$search_result .= "$s_desc\n";}
 

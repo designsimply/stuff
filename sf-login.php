@@ -44,11 +44,13 @@ function login_form() {
 			</div>
 			<input type="submit" value="sign in" class="button float-left no-transform" tabindex="3">
 			<label for="stay-signed-in">stay signed in</label>
-			<input type="checkbox" title="Select to stay signed in 7 days" name="stay-signed-in" id="stay-signed-in" value="1" tabindex="9">
-		</fieldset>
-	</form>
-	<p class="back">
+			<input type="checkbox" title="Select to stay signed in 7 days" name="stay-signed-in" id="stay-signed-in" value="1" tabindex="9">\n
 END;
+	foreach( $_GET as $k => $v ) {
+		$output .= "\t\t\t" . '<input type="hidden" name="' . $k . '" value="' . $v . '" />' . "\n";
+	}
+	$output .= "\t\t</fieldset>\n\t</form>\n\t";
+	$output .= '<p class="back">';
 	$output .= '<a href="' . HOME . '">&larr; Home</a></p>';
 	return $output;
 } // end of login_form()
@@ -69,16 +71,26 @@ switch ($action) {
 case 'login' :
 default:
 	login_header();
-	// If a username is present, check to see if we can log in.
+	// If a username is present, do it to it.
 	if ( ! empty( $_POST['user'] ) && sf_authenticate($_POST['user'], $_POST['pass']) ) {
 		sf_set_auth_cookie($_POST['user'], $_POST['remember']);
-		echo 'You are now logged in. <a href="javascript:" onClick="history.go(-2)">Go back</a>.';
+		$data['url']   = $_POST['url'];
+		$data['title'] = $_POST['title'];
+		$data['desc']  = $_POST['desc'];
+		$qs = http_build_query( $data );
+		echo 'You are now logged in. <a href="'. HOME . 'post.php?' . $qs . '">Continue</a>.';
+		if ( ! empty( $qs ) ) {
+			header( 'Location: ' . HOME . 'post.php?' . $qs );
+		} else {
+			header( 'Location: ' . HOME . 'latest.php' );
+		}
 
-	// If ia username is present but the cooki doesn't validate, error out.
+	// If ia username is present but the cookie doesn't validate, error out.
 	} elseif ( ! empty( $_POST['user'] ) && ! sf_validate_auth_cookie() ) {
 		echo 'Login failed.';
-		echo ' <a href="' . HOME . '/sf-login.php">Try again</a>.';
+		echo ' <a href="' . HOME . 'sf-login.php">Try again</a>.';
 		echo login_form();
+
 	// Try logging in.
 	} else {
 		echo login_form();
