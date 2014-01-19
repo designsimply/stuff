@@ -39,7 +39,7 @@ echo "</p>";
 $result = $sfdb->get_results( "SELECT * FROM sf_links ORDER BY datecreated DESC LIMIT $start, $limit" );
 foreach ( $result as $row ) {
 	$lastmod = strtotime( $row->lastmodified );
-	$datemod = strftime( "%b %e", $lastmod );
+	$datemod = strftime( "%d %b %Y", $lastmod );
 	$sincewhen  = time_since( $lastmod );
 	$i = '';
 	if ( sf_user_can_edit() ) { $i .= 
@@ -52,7 +52,7 @@ foreach ( $result as $row ) {
 	$items[] = $i;
 }
 
-echo '<ul>';
+echo '<ul class="list-with-dates">';
 foreach ( $items as $item ) {
 	echo "<li>$item</li>";
 }
