@@ -42,6 +42,7 @@
 		foreach ( $result as $row ) {
 			// Hightlight searched text
 			$id = $row->id;
+			$url = $row->url;
 			$ntitle = preg_replace("/$q/i", "<font style='background-color: yellow'>$q</font>", $row->title);
 			$ndesc = preg_replace("/$q/i", "<font style='background-color: yellow'>$q</font>", $row->description);
 			$ndesc2 = preg_replace("/a href=(.*)<font style='background-color: yellow'>$q<\/font>(.*)>/i", "a href=$1$q$2>",$ndesc);
