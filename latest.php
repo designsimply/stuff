@@ -29,14 +29,8 @@ $paged -= 1;
 $next = $paged + 2;
 $start = $paged * $limit;
 
-echo "<p style=\"text-align: center;]\">";
-if ( $paged > 0 )
-	echo "<a href=\"" . HOME . "latest.php?paged=$paged&limit=$limit\" alt=\"previous\"><span class=\"genericon genericon-previous\"></span>previous</a> ";
-
-echo "<a href=\"" . HOME . "latest.php?paged=$next&limit=$limit\" alt=\"next\">next <span class=\"genericon genericon-next\"></span></a> ";
-echo "</p>";
-
-$result = $sfdb->get_results( "SELECT * FROM sf_links ORDER BY datecreated DESC LIMIT $start, $limit" );
+$result = $sfdb->get_results( "SELECT * FROM sf_links ORDER BY lastmodified DESC LIMIT $start, $limit" );
+$total = $sfdb->num_rows;
 foreach ( $result as $row ) {
 	$lastmod = strtotime( $row->lastmodified );
 	$datemod = strftime( "%d %b %Y", $lastmod );
@@ -51,6 +45,15 @@ foreach ( $result as $row ) {
 		if ( '' != $row->description ) { $i .= "&mdash; $row->description\n"; }
 	$items[] = $i;
 }
+
+echo "<p style=\"text-align: center;]\">";
+if ( $paged > 0 )
+	echo "<a href=\"" . HOME . "latest.php?tag=$tag&paged=$paged&limit=$limit\" alt=\"previous\"><span class=\"genericon genericon-previous\"></span>previous</a> ";
+
+if ( $total >= $limit )
+	echo "<a href=\"" . HOME . "latest.php?tag=$tag&paged=$next&limit=$limit\" alt=\"next\">next <span class=\"genericon genericon-next\"></span></a> ";
+
+echo "</p>";
 
 echo '<ul class="list-with-dates">';
 foreach ( $items as $item ) {
