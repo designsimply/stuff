@@ -15,10 +15,12 @@
 if ( empty( $_GET ) ) {
 	$result = $sfdb->get_results( "SELECT cat FROM sf_links GROUP BY cat ORDER BY cat" );
 	foreach ( $result as $row ) {
-		$categories[] = "<a href=\"index.php?cat=$row->cat\">$row->cat</a><br />\n";
+		if ( ! empty( $row->cat ) ) 
+			$categories[] = "<a href=\"index.php?cat=$row->cat\">$row->cat</a><br />\n";
+
 	}
 
-	echo '<ul>';
+	echo '<ul class="columns">';
 	foreach ( $categories as $v )
 		echo "<li>$v</li>";
 
@@ -142,6 +144,21 @@ if ( isset ( $result ) ) {
 	}
 	echo "</ul>\n";
 }
+}
+
+$sql = "SELECT name FROM sf_tag LIMIT 80";
+$result = $sfdb->get_results( $sql ) or die ( "No tags found." );
+$total = $sfdb->num_rows;
+
+if ( $total > 0 ) {
+	echo '<p>&nbsp;</p>';
+	echo "<ul class=\"columns\">\n";
+	foreach ( $result as $row ) {
+		if ( !empty( $row->name ) )
+			echo '<li><a href="' . HOME . 'tag/?tag=' . $row->name. '" class="item">' . $row->name . '</a></li>';
+	
+	}
+	echo "</ul>\n";
 } ?>
 
 <footer>
