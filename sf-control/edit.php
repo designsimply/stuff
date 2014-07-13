@@ -106,10 +106,11 @@
 
 			// Add in all the tags from the form
 			foreach( $tags as $tag ) {
-				$sfdb->query( "INSERT IGNORE INTO sf_tag SET name = '" . mysql_escape_string( trim( $tag ) ) . "';" );
-
-				$tag_id = $sfdb->get_var( "SELECT tag_id FROM sf_tag WHERE name = '" . mysql_escape_string( trim( $tag ) ) . "';" );
-				$form_tag_ids[] = $tag_id;
+				if ( ! empty( $tag ) ) {
+					$sfdb->query( "INSERT IGNORE INTO sf_tag SET name = '" . mysql_escape_string( trim( $tag ) ) . "';" );
+					$tag_id = $sfdb->get_var( "SELECT tag_id FROM sf_tag WHERE name = '" . mysql_escape_string( trim( $tag ) ) . "';" );
+					$form_tag_ids[] = $tag_id;
+				}
 			}
 		}
 
@@ -117,15 +118,14 @@
 		$db_tag_ids = $sfdb->get_col( "SELECT tag_id FROM sf_tagmap WHERE link_id = " . mysql_escape_string( $link_id ) );
 
 		// Get tags from the form that aren't in the tagmap then add them
-		$tags_to_add = array_diff_assoc( $form_tag_ids, $db_tag_ids );
-		foreach ( $tags_to_add as $tag_id ) {
-			$sfdb->query( "INSERT INTO sf_tagmap SET tag_id = $tag_id, link_id = $link_id" );
-		}
+		if ( is_array( $form_tag_ids ) ) {
+			$tags_to_add = array_diff_assoc( $form_tag_ids, $db_tag_ids );
+			foreach ( $tags_to_add as $tag_id )
+				$sfdb->query( "INSERT INTO sf_tagmap SET tag_id = $tag_id, link_id = $link_id" );
 
-		// Get tags from the tagmap that weren't in the form then delete them
-		$tags_to_delete = array_diff_assoc( $db_tag_ids, $form_tag_ids );
-		foreach ( $tags_to_delete as $tag_id ) {
-			$sfdb->query( "DELETE FROM sf_tagmap WHERE tag_id = $tag_id AND link_id = $link_id" );
+			$tags_to_delete = array_diff_assoc( $db_tag_ids, $form_tag_ids );
+			foreach ( $tags_to_delete as $tag_id )
+				$sfdb->query( "DELETE FROM sf_tagmap WHERE tag_id = $tag_id AND link_id = $link_id" );
 		}
 
 		// Check the db and print the updates
@@ -156,7 +156,11 @@
 		echo '</p>';
 		?>
 
-		<p class="center"><a href="<?php echo $_POST['referrer']; ?>">continue</a></p>
+		<p class="center"><a href="<?php if ( false === strpos( $_POST['referrer'], 'post.php' ) ) { 
+			echo $_POST['referrer'];
+		} else {
+			echo 'javascript:history.go(-3)'; 
+		} ?>">go back</a></p>
 
 <?php } ?>
 
@@ -165,7 +169,8 @@
 	 &bull; <a href="<?php echo HOME; ?>latest.php" accesskey="l">latest</a>
 	 &bull; <a href="<?php echo HOME; ?>sf-control/add.php" accesskey="a">add</a>
 	 &bull; <a href="<?php echo HOME; ?>sf-control/edit.php" accesskey="e">edit</a>
-	 &bull; <a href="javascript:<?php echo sf_the_bookmarklet(); ?>" accesskey="b">bookmarklet</a>
+	 &bull; <a href="javascript:<?php echo sf_the_bookmarklet(); ?>" accesskey="s">stuff</a>
+	 &bull; <a href="<?php echo HOME; ?>sf-control/bookmarklet.php" accesskey="b">bookmarklet</a>
 </footer>
 </body>
 </html>

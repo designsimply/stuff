@@ -59,9 +59,11 @@
 
 		// Make sure each tag exists in the database
 		foreach( $tags as $tag ) {
-			$sfdb->query( "INSERT IGNORE INTO sf_tag SET name = '" . mysql_escape_string( trim( $tag ) ) . "';" );
-			$tag_id = $sfdb->get_var( "SELECT tag_id FROM sf_tag WHERE name = '" . mysql_escape_string( trim( $tag ) ) . "';" );
-			$tag_ids["$tag"] = $tag_id;
+			if ( ! empty( $tag ) ) {
+				$sfdb->query( "INSERT IGNORE INTO sf_tag SET name = '" . mysql_escape_string( trim( $tag ) ) . "';" );
+				$tag_id = $sfdb->get_var( "SELECT tag_id FROM sf_tag WHERE name = '" . mysql_escape_string( trim( $tag ) ) . "';" );
+				$tag_ids["$tag"] = $tag_id;
+			}
 		}
 
 		foreach ( $tag_ids as $k => $v )
@@ -114,6 +116,7 @@
 	 &bull; <a href="<?php echo HOME; ?>latest.php" accesskey="l">latest</a>
 	 &bull; <a href="<?php echo HOME; ?>sf-control/add.php" accesskey="a">add</a>
 	 &bull; <a href="<?php echo HOME; ?>sf-control/edit.php" accesskey="e">edit</a>
+	 &bull; <a href="<?php echo HOME; ?>sf-control/bookmarklet.php" accesskey="b">bookmarklet</a>
 	<!-- <?php sf_get_number_rows(); ?> last modified <?php sf_get_last_modified(); ?> 
 	as of <?php echo date("Y-m-d"); ?> at <?php echo date("G:i:s T"); ?> -->
 </footer>
