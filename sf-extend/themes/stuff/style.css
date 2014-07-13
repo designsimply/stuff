@@ -29,43 +29,47 @@ ul.list-with-dates li abbr {
 	text-align: right;
 }
 
+.search ul {
+	max-width: 75%;
+}
+
 @media (min-width: 75em) {
-	.home ul {
+	ul.columns {
 		columns: 8;
 		-webkit-columns: 8;
 		-moz-columns: 8;
 	}
 }
 @media (max-width: 75em) {
-	.home ul {
+	ul.columns {
 		columns: 6;
 		-webkit-columns: 6;
 		-moz-columns: 6;
 	}
 }
 @media (max-width: 60em) {
-	.home ul {
+	ul.columns {
 		columns: 4;
 		-webkit-columns: 4;
 		-moz-columns: 4;
 	}
 }
 @media (max-width: 50em) {
-	.home ul {
+	ul.columns {
 		columns: 3;
 		-webkit-columns: 3;
 		-moz-columns: 3;
 	}
 }
 @media (max-width: 40em) {
-	.home ul {
+	ul.columns {
 		columns: 2;
 		-webkit-columns: 2;
 		-moz-columns: 2;
 	}
 }
 @media (max-width: 30em) {
-	.home ul {
+	ul.columns {
 		columns: inherit;
 		-webkit-columns: inherit;
 		-moz-columns: inherit;
