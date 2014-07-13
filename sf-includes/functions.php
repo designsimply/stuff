@@ -154,7 +154,24 @@ function sf_get_last_modified() {
  * Print bookmarklet
  */
 function sf_the_bookmarklet() {
-	$output = "javascript:(function()%7B%20var%20q;%20q=((window.getSelection%20&&%20window.getSelection())%20%7C%7C(document.getSelection%20&&%20document.getSelection())%20%7C%7C(document.selection%20&&document.selection.createRange%20&&document.selection.createRange().text));location.href='".SITEURL.HOME."post.php?url='+encodeURIComponent(location.href)+'&title='+escape(document.title)+'&desc='+escape(q)+escape('');%7D)();";
+	$output = "javascript: function sfb() {
+	var d = document,
+		l = d.location,
+		u = l.href,
+		t = d.title,
+		s = '';
+		if (window.getSelection) {
+			s = window.getSelection();
+		} else if (d.getSelection) {
+			s = d.getSelection();
+		} else if (d.selection) {
+			s = d.selection.createRange().text;
+		}
+		g = '" . SITEURL . HOME . "post.php?url=' + encodeURIComponent(u) + '&title=' + escape(t) + '&desc=' + escape(s);
+	l.href = g;
+	}
+	sfb();
+	void(0)";
 
 	return $output;
 }
