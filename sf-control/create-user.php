@@ -34,8 +34,8 @@ function fail($pub, $pvt = '')
 	exit("An error occurred ($msg).\n");
 }
 
-$db->query( "INSERT INTO sf_user (user_id, user_login, user_pass, user_email) VALUES (NULL, '$user', '$hash', '$email')" );
-$db->debug();
+$sfdb->query( "INSERT INTO sf_user (user_id, user_login, user_pass, user_email) VALUES (NULL, '$user', '$hash', '$email')" );
+$sfdb->debug();
 
 }
 
