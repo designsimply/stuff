@@ -8,10 +8,28 @@
 		<script type="text/javascript" src="<?php echo HOME; ?>sf-extend/themes/stuff/script.js"></script>
 </head>
 
-<body class="list <?php if ( sf_user_can_edit() ) { echo "loggedin"; } ?>">
+<body class="search list <?php if ( sf_user_can_edit() ) { echo "loggedin"; } ?>">
 <div style="text-align:center;"><?php sf_get_search_form(); ?></div>
 
-<?php	extract($_GET);
+<?php
+	extract($_GET);
+	$paged = $_GET['paged'];
+	$limit = $_GET['limit'];
+
+	if ( $paged < 1 )
+		$paged = 1;
+
+	if ( $limit < 1 ) {
+		$limit = 20;
+	} else if ( $limit > 200 ) {
+		$limit = 200;
+	}
+
+	$start = 0;
+	$paged -= 1;
+	$next = $paged + 2;
+	$start = $paged * $limit;
+
 	if (is_null($orderby))
 			$orderby = "cat,subcat,subcat1,subcat2,title,description";
 
@@ -32,51 +50,63 @@
 	$sql .= " ORDER BY $orderby";
 
 	$result = $sfdb->get_results( $sql ) or die( "Couldn't execute the query." );
-	$num_rows = $sfdb->num_rows;
+	$total = $sfdb->num_rows;
+	$sql .= " LIMIT $start, $limit";
+	$result = $sfdb->get_results( $sql ) or die( "Couldn't execute the query." );
+
+	echo "<p style=\"text-align: center;]\">";
+	if ( $paged > 0 )
+		echo "<a href=\"?q=$q&paged=$paged&limit=$limit\" alt=\"previous\"><span class=\"genericon genericon-previous\"></span>previous</a> ";
+
+	if ( $total > ($paged+1) * $limit )
+		echo "<a href=\"?q=$q&paged=$next&limit=$limit\" alt=\"next\">next <span class=\"genericon genericon-next\"></span></a> ";
+
+	echo "</p>";
 
 	// Disply search results
-	if ( $num_rows > 0 ) {
-		echo "<div class=\"container\">Results found: $num_rows</div>";
+	if ( $total > 0 ) {
+		$lower = ($paged * $limit) + 1;
+		$upper = ($paged + 1) * $limit;
+		if ( $total < $upper ) { $upper = $total; }
 
-		$search_result = "<ul>\n";
+		$search_result  = "<ul class=\"list-with-dates\">\n";
+		$search_result .= "<li><strong>Search results $lower to $upper of $total</strong></li>";
 		foreach ( $result as $row ) {
-			// Hightlight searched text
-			$id = $row->id;
-			$url = $row->url;
-			$ntitle = preg_replace("/$q/i", "<font style='background-color: yellow'>$q</font>", $row->title);
-			$ndesc = preg_replace("/$q/i", "<font style='background-color: yellow'>$q</font>", $row->description);
-			$ndesc2 = preg_replace("/a href=(.*)<font style='background-color: yellow'>$q<\/font>(.*)>/i", "a href=$1$q$2>",$ndesc);
-			$ncat = preg_replace("/$q/i", "<font style='background-color: yellow'>$q</font>", $row->cat);
-			$nsubcat = preg_replace("/$q/i", "<font style='background-color: yellow'>$q</font>", $row->subcat);
-			$nsubcat1 = preg_replace("/$q/i", "<font style='background-color: yellow'>$q</font>", $row->subcat1);
-			$nsubcat2 = preg_replace("/$q/i", "<font style='background-color: yellow'>$q</font>", $row->subcat2);
+			$row = (array) $row;
+			//$row = str_ireplace( $q, "<span style=\"background-color: yellow\">$q</span>", $row );
+			$row['title'] = str_ireplace( $q, "<span style=\"background-color: yellow\">$q</span>", $row['title'] );
+			$row['description'] = str_ireplace( $q, "<span style=\"background-color: yellow\">$q</span>", $row['description'] );
 
 			// Display search results
 			if ('' != $qurl && $url==$qurl) { $search_result .= '<li class="exactmatch" style="background-color:#ffff99;">'; } else { $search_result .= '<li>'; }
 			if ( sf_user_can_edit() ) { $search_result .= 
 				/*"<a href=\"sf-control/edit.php?id=$row->id\" alt=\"delete\"><span class=\"genericon genericon-close\"></span></a> " .*/
-				"<a href=\"sf-control/edit.php?id=$row->id\" alt=\"edit\"><span class=\"genericon genericon-edit\"></span></a> ";
+				"<a href=\"sf-control/edit.php?id=$row[id]\" alt=\"edit\"><span class=\"genericon genericon-edit\"></span></a> ";
 			}
-			//$search_result .= '<a class="designsimply designsimply-edit" href="'.HOME.'sf-control/edit.php?id='.$id.'"></a> ';
-			//$search_result .= "\n<form id=\"sf_delete\" name=\"delete_$id\" action=\"".HOME."sf-control/edit.php?cat=$ncat\" method=\"post\" style=\"display: inline;\">\n\t<input name=\"status\" type=\"hidden\" value=\"delete\" />\n\t<input name=\"id\" type=\"hidden\" value=\"$id\" />\n";
+			/*
+			$search_result .= "\n<form id=\"sf_delete\" name=\"delete_$id\" action=\"".HOME."sf-control/edit.php?cat=$ncat\" method=\"post\" style=\"display: inline;\">\n\t<input name=\"status\" type=\"hidden\" value=\"delete\" />\n\t<input name=\"id\" type=\"hidden\" value=\"$id\" />\n";
 			if (isset($ncat)) {$search_result .= "\t<input name=\"cat\" type=\"hidden\" value=\"$ncat\" />\n";}
 			if (isset($nsubcat)) {$search_result .= "\t<input name=\"subcat\" type=\"hidden\" value=\"$nsubcat\" />\n";}
 			if (isset($nsubcat1)) {$search_result .= "\t<input name=\"nsubcat1\" type=\"hidden\" value=\"$nsubcat1\" />\n";}
 			if (isset($nsubcat2)) {$search_result .= "\t<input name=\"nsubcat2\" type=\"hidden\" value=\"$nsubcat2\" />\n";}
 			$search_result .= "\t<a class=\"designsimply designsimply-delete\" onclick=\"return confirm('Are you sure you want to delete $title?');document.getElementById('sf_delete').submit();\"></a>\n</form> ";
-
-			if ($ncat) {$search_result .= "<a href=\"".HOME."home/".strtolower($ncat)."\">$ncat</a> > ";}
-			if ($nsubcat) {$search_result .= "<a href=\"".HOME."home/".strtolower($ncat)."/".strtolower($nsubcat)."\">$nsubcat</a> > ";}
-			if ($nsubcat1) {$search_result .= "<a href=\"".HOME."home/".strtolower($ncat)."/".strtolower($nsubcat)."/".strtolower($nsubcat1)."\">$nsubcat1</a> > ";}
-			if ($nsubcat1) {$search_result .= "<a href=\"".HOME."home/".strtolower($ncat)."/".strtolower($nsubcat)."/".strtolower($nsubcat1)."/".strtolower($nsubcat2)."\">$nsubcat2</a> > ";}
-			if ($url) {$search_result .= "<a href=\"$url\">$ntitle</a>";} else {$search_result .= "$ntitle";}
-			if ($ndesc) {$search_result .= " - $ndesc</li>\n";} else {$search_result .= "</li>\n";}
+			*/
+			$lastmod = strtotime( $row['lastmodified'] );
+			$datemod = strftime( "%d %b %Y", $lastmod );
+			$sincewhen  = time_since( $lastmod );
+			$search_result .= "<abbr class=\"date\" title=\"$datemod\">$sincewhen</abbr> ";
+			if ($row['cat'])     {$search_result .= "<a href=\"".HOME."home/".strtolower($row['cat'])."\">$row[cat]</a> &rarr; ";}
+			if ($row['subcat'])  {$search_result .= "<a href=\"".HOME."home/".strtolower($row['cat'])."/".strtolower($row['subcat'])."\">$row[subcat]</a> &rarr; ";}
+			if ($row['subcat1']) {$search_result .= "<a href=\"".HOME."home/".strtolower($row['cat'])."/".strtolower($row['subcat'])."/".strtolower($row['subcat1'])."\">$row[subcat1]</a> &rarr; ";}
+			if ($row['subcat2']) {$search_result .= "<a href=\"".HOME."home/".strtolower($row['cat'])."/".strtolower($row['subcat'])."/".strtolower($row['subcat1'])."/".strtolower($row['subcat2'])."\">$row[subcat2]</a> &rarr; ";}
+			if ($row['url'])     {$search_result .= "<a href=\"$row[url]\">$row[title]</a>";} else {$search_result .= "$row[title]";}
+			if ($row['description']) {$search_result .= " - $row[description]</li>\n";} else {$search_result .= "</li>\n";}
 		}
 		$search_result .= "</ul>\n";
 
 	 	echo $search_result;
 } else {
- 	echo "<center><p>A search for \"$q\" returned 0 results.</p></center>";
+ 	echo "<center><p>A search for \"$q\" returned no results.</p></center>";
 } ?>
 
 <footer>
